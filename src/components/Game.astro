@@ -121,6 +121,15 @@
       .getElementById("bobaCheckbox")
       .addEventListener("change", updateSugar);
     document
+      .getElementById("puddingCheckbox")
+      .addEventListener("change", updateSugar);
+    document
+      .getElementById("grassCheckbox")
+      .addEventListener("change", updateSugar);
+    document
+      .getElementById("konjacCheckbox")
+      .addEventListener("change", updateSugar);
+    document
       .getElementById("sugarSelect")
       .addEventListener("change", updateSugar);
 
@@ -181,27 +190,33 @@
     let base = document.getElementById("baseSelect").value;
     let milk = document.getElementById("milkCheckbox").checked;
     let boba = document.getElementById("bobaCheckbox").checked;
+    let pudding = document.getElementById("puddingCheckbox").checked;
+    let grass = document.getElementById("grassCheckbox").checked;
+    let konjac = document.getElementById("konjacCheckbox").checked;
     let sugar = document.getElementById("sugarSelect").value;
 
     // Calculate the new total sugar
     let newTotalSugar = 0;
     if (milk) newTotalSugar += 3;
-    if (boba) newTotalSugar += 5;
+    if (boba) newTotalSugar += 3;
+    if (pudding) newTotalSugar += 2;
+    if (grass) newTotalSugar += 1;
+    if (konjac) newTotalSugar += 1;
     switch (sugar) {
       case "0%":
         newTotalSugar += 0;
         break;
       case "30%":
-        newTotalSugar += 5;
+        newTotalSugar += 2;
         break;
       case "50%":
-        newTotalSugar += 7;
+        newTotalSugar += 4;
         break;
       case "70%":
-        newTotalSugar += 10;
+        newTotalSugar += 6;
         break;
       case "100%":
-        newTotalSugar += 30;
+        newTotalSugar += 12;
         break;
     }
 
@@ -233,8 +248,10 @@
     // Display the total sugar cubes
     document.getElementById("sugarDisplay").innerHTML =
       `Total sugar cubes: ${totalSugar}`;
-    if (totalSugar > 10) {
+    if (totalSugar > 6) {
       document.getElementById("sugarDisplay").style.color = "red";
+    } else if (totalSugar > 3 && totalSugar <= 6) {
+      document.getElementById("sugarDisplay").style.color = "orange";
     } else {
       document.getElementById("sugarDisplay").style.color = "black";
     }
