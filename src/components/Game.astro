@@ -250,6 +250,8 @@
       `Total sugar cubes: ${totalSugar}`;
     if (totalSugar > 6) {
       document.getElementById("sugarDisplay").style.color = "red";
+      document.getElementById("sugarDisplay").innerHTML =
+        `Total sugar cubes: ${totalSugar} <br/> (Warning!)`;
     } else if (totalSugar > 3 && totalSugar <= 6) {
       document.getElementById("sugarDisplay").style.color = "orange";
     } else {
