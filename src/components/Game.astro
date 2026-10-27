@@ -1,353 +1,86 @@
-<div class="game-wrapper">
-  <h5>Customize Your Boba!</h5>
-  <div class="game-section" id="gameSection">
-    <!-- Container for the p5.js sketch -->
-
+---
+import BobaSugarNotes from './BobaSugarNotes.astro';
+---
+<div class="game-wrapper" lang="en" data-boba-customizer>
+  <h2 class="game-title" id="game-title">Customize Your Boba!</h2>
+  <p class="game-reference">A 500 mL reference drink · one cube ≈ 4 g total sugar</p>
+  <section class="game-section" id="gameSection" aria-labelledby="game-title">
     <div id="container">
       <div id="menu-container">
-        <p>Base:</p>
+        <p><label for="baseSelect">Base:</label></p>
         <select id="baseSelect">
           <option value="">Please select a base</option>
           <option>Green Tea</option>
           <option>Black Tea</option>
         </select>
-
-        <p>Milk:</p>
-
-        <input type="checkbox" id="milkCheckbox" />
-        <span>Add Milk</span>
-
-        <p>Toppings:</p>
-        <input type="checkbox" id="bobaCheckbox" />
-        <span>Boba</span>
-        <br />
-        <input type="checkbox" id="puddingCheckbox" />
-        <span>Pudding</span>
-        <br />
-        <input type="checkbox" id="grassCheckbox" />
-        <span>Grass Jelly</span>
-        <br />
-        <input type="checkbox" id="konjacCheckbox" />
-        <span>Konjac</span>
-
-        <p>Sugar:</p>
-        <select id="sugarSelect">
+        <fieldset>
+          <legend>Milk:</legend>
+          <div class="game-option"><input type="checkbox" id="milkCheckbox" /><label for="milkCheckbox"><span>Add Milk</span></label></div>
+        </fieldset>
+        <fieldset>
+          <legend>Toppings:</legend>
+          <div class="game-option"><input type="checkbox" id="bobaCheckbox" /><label for="bobaCheckbox"><span>Boba</span></label></div>
+          <div class="game-option"><input type="checkbox" id="puddingCheckbox" /><label for="puddingCheckbox"><span>Pudding</span></label></div>
+          <div class="game-option"><input type="checkbox" id="grassCheckbox" /><label for="grassCheckbox"><span>Grass Jelly</span></label></div>
+          <div class="game-option"><input type="checkbox" id="konjacCheckbox" /><label for="konjacCheckbox"><span>Konjac</span></label></div>
+        </fieldset>
+        <p><label for="sugarSelect">Sugar:</label></p>
+        <select id="sugarSelect" aria-describedby="syrup-model-note">
           <option>0%</option>
           <option>30%</option>
           <option>50%</option>
           <option>70%</option>
           <option>100%</option>
         </select>
+        <p class="game-note" id="syrup-model-note">Illustrative syrup recipe: 100% adds 32 g sugar.</p>
+        <button type="button" data-compare-button aria-expanded="false" aria-controls="drink-comparison">Compare Another Drink</button>
+        <p class="game-note" data-editing-note></p>
       </div>
-
-      <div class="make-drinks">
-        <img style="opacity: 1;" src="img/make-drinks/teacup.png" />
-        <img id="greentea" src="img/make-drinks/greentea.png" />
-        <img id="blacktea" src="img/make-drinks/blacktea.png" />
-        <img id="milk" src="img/make-drinks/milk.png" />
-        <img id="milktea" src="img/make-drinks/milktea.png" />
-        <img id="matchalatte" src="img/make-drinks/matchalatte.png" />
-        <img id="bobo" src="img/make-drinks/bobo.png" />
-        <img id="pudding" src="img/make-drinks/pudding.png" />
-        <img id="grass-jelly" src="img/make-drinks/grass-jelly.png" />
-        <img id="konjac" src="img/make-drinks/konjac.png" />
+      <div class="make-drinks" data-current-illustration aria-hidden="true">
+        <img style="opacity: 1;" src="img/make-drinks/teacup.png" alt="" />
+        <img id="greentea" src="img/make-drinks/greentea.png" alt="" />
+        <img id="blacktea" src="img/make-drinks/blacktea.png" alt="" />
+        <img id="milk" src="img/make-drinks/milk.png" alt="" />
+        <img id="milktea" src="img/make-drinks/milktea.png" alt="" />
+        <img id="matchalatte" src="img/make-drinks/matchalatte.png" alt="" />
+        <img id="bobo" src="img/make-drinks/bobo.png" alt="" />
+        <img id="pudding" src="img/make-drinks/pudding.png" alt="" />
+        <img id="grass-jelly" src="img/make-drinks/grass-jelly.png" alt="" />
+        <img id="konjac" src="img/make-drinks/konjac.png" alt="" />
       </div>
-      <div>
-        <div id="sketch-container"></div>
-        <div id="sugarDisplay">0</div>
+      <div class="sugar-visual">
+        <div id="sketch-container" aria-hidden="true"></div>
+        <p class="game-note" data-renderer-note hidden>The cube illustration is unavailable. Sugar estimates and comparison still update below.</p>
+        <div id="sugarDisplay">
+          <p class="game-note" data-drink-label>Your drink</p>
+          <p class="game-cube-count" data-cube-count>0 sugar cubes</p>
+          <p class="game-total" data-total-sugar>0 g estimated total sugar</p>
+          <p class="game-note" data-free-sugar>Estimated free sugar: 0 g.</p>
+          <p class="game-note game-reference-notice" data-reference-notice>Estimated free sugar is within the 25 g daily reference.</p>
+          <p class="game-note">25 g is a daily reference, not a per-drink safety limit. <a href="#sugar-methodology">How we estimate sugar</a></p>
+        </div>
       </div>
-
-      <!-- This is where the p5.js canvas will be rendered -->
     </div>
-  </div>
+    <p class="game-note game-recipe" data-current-recipe>Tea base not selected · no milk · no toppings · 0% sweetness</p>
+    <section class="game-comparison" id="drink-comparison" data-comparison aria-labelledby="comparison-title" hidden>
+      <h3 id="comparison-title">Drink 1 · Fixed reference</h3>
+      <div class="game-reference-drink">
+        <div data-reference-illustration aria-hidden="true"></div>
+        <img class="game-reference-cubes" data-reference-cubes hidden alt="" aria-hidden="true" width="300" height="500" />
+        <div class="game-reference-text">
+          <p data-reference-total></p>
+          <p class="game-note" data-reference-free></p>
+          <p class="game-note" data-reference-recipe></p>
+          <p data-comparison-difference></p>
+        </div>
+      </div>
+    </section>
+    <BobaSugarNotes />
+    <p class="game-sr-only" role="status" aria-atomic="true" data-status></p>
+    <noscript><p>Enable JavaScript to customize the drink and update the sugar cubes and estimates.</p></noscript>
+  </section>
 </div>
-
-<style>
-  h5 {
-    font-size: 5rem;
-    margin: 0;
-    position: absolute;
-    margin-top: 1%;
-  }
-</style>
-
-<!-- Include p5.js library -->
-<script is:inline src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"
-></script>
-<script
-  is:inline
-  src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/addons/p5.sound.min.js"
-></script>
-<script
-  is:inline
-  src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.js"
-></script>
-
-<!-- Your custom p5.js code -->
-<script is:inline>
-  // Matter.js module aliases
-  const { Engine, World, Bodies, Body } = Matter;
-
-  let engine, world;
-  let ground, leftWall, rightWall;
-  let button;
-  let sugarCubes = [];
-  let totalSugar = 0;
-
-  function setup() {
-    // Create a canvas within the "sketch-container" div
-    createCanvas(300, 500, WEBGL).parent("sketch-container");
-
-    // Matter.js setup
-    engine = Engine.create();
-    world = engine.world;
-
-    // Ground and walls
-    ground = Bodies.rectangle(300, 490, 600, 20, { isStatic: true });
-    World.add(world, ground);
-    leftWall = Bodies.rectangle(0, 200, 20, 500, { isStatic: true });
-    rightWall = Bodies.rectangle(300, 200, 20, 500, { isStatic: true });
-    World.add(world, leftWall);
-    World.add(world, rightWall);
-
-    // Setup menu elements from HTML
-    document
-      .getElementById("baseSelect")
-      .addEventListener("change", updateSugar);
-    document
-      .getElementById("milkCheckbox")
-      .addEventListener("change", updateSugar);
-    document
-      .getElementById("bobaCheckbox")
-      .addEventListener("change", updateSugar);
-    document
-      .getElementById("puddingCheckbox")
-      .addEventListener("change", updateSugar);
-    document
-      .getElementById("grassCheckbox")
-      .addEventListener("change", updateSugar);
-    document
-      .getElementById("konjacCheckbox")
-      .addEventListener("change", updateSugar);
-    document
-      .getElementById("sugarSelect")
-      .addEventListener("change", updateSugar);
-
-    // Initial sugar setup
-    updateSugar(); // initialize the menu
-  }
-
-  function draw() {
-    background(0, 0, 0, 0);
-
-    ambientLight(300);
-    directionalLight(255, 255, 255, -1, -1, -1);
-
-    Engine.update(engine);
-
-    // Draw ground
-    push();
-    translate(0, height / 2 - 10, 0);
-    rotateX(HALF_PI);
-    fill(150);
-    noStroke();
-    rectMode(CENTER);
-    rect(0, 0, 300, 10);
-    pop();
-
-    // Draw walls
-    push();
-    translate(-width / 2 + 10, 0, 0);
-    fill(0, 0, 0, 0);
-    box(0, 0, 0);
-    pop();
-
-    push();
-    translate(width / 2 - 10, 0, 0);
-    fill(0, 0, 0, 0);
-    box(0, 0, 0);
-    pop();
-
-    // Draw sugar cubes
-    for (let cube of sugarCubes) {
-      push();
-      translate(
-        cube.position.x - width / 2,
-        cube.position.y - height / 2 - 0,
-        0
-      );
-      rotateX(cube.angle);
-      rotateZ(cube.angle);
-      fill(255);
-      box(40);
-      pop();
-    }
-  }
-
-  // --- Update sugar cubes based on menu ---
-  function updateSugar() {
-    // Get the selections from the menu
-    let base = document.getElementById("baseSelect").value;
-    let milk = document.getElementById("milkCheckbox").checked;
-    let boba = document.getElementById("bobaCheckbox").checked;
-    let pudding = document.getElementById("puddingCheckbox").checked;
-    let grass = document.getElementById("grassCheckbox").checked;
-    let konjac = document.getElementById("konjacCheckbox").checked;
-    let sugar = document.getElementById("sugarSelect").value;
-
-    // Calculate the new total sugar
-    let newTotalSugar = 0;
-    if (milk) newTotalSugar += 3;
-    if (boba) newTotalSugar += 3;
-    if (pudding) newTotalSugar += 2;
-    if (grass) newTotalSugar += 1;
-    if (konjac) newTotalSugar += 1;
-    switch (sugar) {
-      case "0%":
-        newTotalSugar += 0;
-        break;
-      case "30%":
-        newTotalSugar += 2;
-        break;
-      case "50%":
-        newTotalSugar += 4;
-        break;
-      case "70%":
-        newTotalSugar += 6;
-        break;
-      case "100%":
-        newTotalSugar += 12;
-        break;
-    }
-
-    // If total sugar changes, add/remove cubes
-    if (newTotalSugar > totalSugar) {
-      let cubesToAdd = newTotalSugar - totalSugar;
-      for (let i = 0; i < cubesToAdd; i++) {
-        let sugarCube = Bodies.rectangle(
-          random(50, width - 50),
-          -50 - i * 50,
-          40,
-          40,
-          { restitution: 0.9 }
-        );
-        World.add(world, sugarCube);
-        sugarCubes.push(sugarCube);
-      }
-    } else if (newTotalSugar < totalSugar) {
-      let cubesToRemove = totalSugar - newTotalSugar;
-      for (let i = 0; i < cubesToRemove; i++) {
-        let cubeToRemove = sugarCubes.pop();
-        World.remove(world, cubeToRemove);
-      }
-    }
-
-    // Update total sugar
-    totalSugar = newTotalSugar;
-
-    // Display the total sugar cubes
-    document.getElementById("sugarDisplay").innerHTML =
-      `Total sugar cubes: ${totalSugar}`;
-    if (totalSugar > 6) {
-      document.getElementById("sugarDisplay").style.color = "red";
-      document.getElementById("sugarDisplay").innerHTML =
-        `Total sugar cubes: ${totalSugar} <br/> (Warning!)`;
-    } else if (totalSugar > 3 && totalSugar <= 6) {
-      document.getElementById("sugarDisplay").style.color = "orange";
-    } else {
-      document.getElementById("sugarDisplay").style.color = "black";
-    }
-  }
-</script>
-
-<!-- make-drinks -->
-<script is:inline>
-  // Get references to the necessary DOM elements
-  const baseSelect = document.getElementById("baseSelect");
-  const milkCheckbox = document.getElementById("milkCheckbox");
-  const bobaCheckbox = document.getElementById("bobaCheckbox");
-  const puddingCheckbox = document.getElementById("puddingCheckbox");
-  const grassCheckbox = document.getElementById("grassCheckbox");
-  const konjacCheckbox = document.getElementById("konjacCheckbox");
-  const greentea = document.getElementById("greentea");
-  const blacktea = document.getElementById("blacktea");
-  const milk = document.getElementById("milk");
-  const milktea = document.getElementById("milktea");
-  const matchalatte = document.getElementById("matchalatte");
-  const boba = document.getElementById("bobo");
-  const pudding = document.getElementById("pudding");
-  const grassJelly = document.getElementById("grass-jelly");
-  const konjac = document.getElementById("konjac");
-
-  // Function to update opacity based on selection
-  function updateDrinksOpacity() {
-    // If 'Green Tea' is selected and 'Add Milk' is checked
-
-    // milk
-    if (milkCheckbox.checked) {
-      milk.style.opacity = 1;
-    } else {
-      milk.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-
-    if (milkCheckbox.checked && baseSelect.value === "Green Tea") {
-      matchalatte.style.opacity = 1;
-    } else {
-      matchalatte.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-
-    if (milkCheckbox.checked && baseSelect.value === "Black Tea") {
-      milktea.style.opacity = 1;
-    } else {
-      milktea.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-
-    if (baseSelect.value === "Green Tea") {
-      greentea.style.opacity = 1; // Set opacity to 1 (visible)
-    } else {
-      greentea.style.opacity = 0;
-    }
-
-    if (baseSelect.value === "Black Tea") {
-      blacktea.style.opacity = 1; // Set opacity to 1 (visible)
-    } else {
-      // Set opacity to 0 (invisible)
-      blacktea.style.opacity = 0;
-    }
-
-    // boba
-    if (bobaCheckbox.checked) {
-      boba.style.opacity = 1; // Set opacity to 1 (visible)
-    } else {
-      boba.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-
-    if (puddingCheckbox.checked) {
-      pudding.style.opacity = 1; // Set opacity to 1 (visible)
-    } else {
-      pudding.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-
-    if (grassCheckbox.checked) {
-      grassJelly.style.opacity = 1; // Set opacity to 1 (visible)
-    } else {
-      grassJelly.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-
-    if (konjacCheckbox.checked) {
-      konjac.style.opacity = 1; // Set opacity to 1 (visible)
-    } else {
-      konjac.style.opacity = 0; // Set opacity to 0 (invisible)
-    }
-  }
-
-  // Add event listeners for changes to the select and checkbox
-  baseSelect.addEventListener("change", updateDrinksOpacity);
-  milkCheckbox.addEventListener("change", updateDrinksOpacity);
-  bobaCheckbox.addEventListener("change", updateDrinksOpacity);
-  puddingCheckbox.addEventListener("change", updateDrinksOpacity);
-  grassCheckbox.addEventListener("change", updateDrinksOpacity);
-  konjacCheckbox.addEventListener("change", updateDrinksOpacity);
-  // Initialize opacity on page load based on current values
-  updateDrinksOpacity();
+<script>
+  import { initCustomizer } from '../scripts/boba/customizer.js';
+  document.querySelectorAll('[data-boba-customizer]').forEach(initCustomizer);
 </script>

@@ -1,0 +1,30 @@
+---
+import { ingredients, syrupSugarG, sources } from '../scripts/boba/nutrition-data.js';
+---
+<details class="game-methodology" id="sugar-methodology">
+  <summary>How We Estimate Sugar</summary>
+  <p>These are illustrative estimates for a standardized 500 mL reference drink, not nutrition facts for a specific commercial drink. Milk uses 100 mL of plain milk within that volume; each topping adds one reference serving.</p>
+  <p>One visual cube represents approximately 4 g of <strong>total sugar</strong>, including naturally occurring sugars. We round to whole cubes; calculations and comparisons use unrounded grams.</p>
+  <p><strong>Project syrup assumption:</strong> 100% sweetness adds 32 g sugar. We scale this illustrative recipe linearly; it is not a universal bubble tea industry standard. Syrup contributes equally to total and free sugar.</p>
+  <p>{Object.entries(syrupSugarG).map(([level, grams]) => `${level}: ${grams} g`).join(' · ')}</p>
+  <div class="game-table-scroll" role="region" aria-label="Ingredient sugar reference table" tabindex="0">
+    <table>
+      <caption>Reference ingredients: grams of sugar per modeled portion</caption>
+      <thead><tr><th scope="col">Ingredient</th><th scope="col">Total sugar</th><th scope="col">Free sugar range</th></tr></thead>
+      <tbody>
+        {Object.values(ingredients).map(item => <tr>
+          <th scope="row">{item.label}<small>{item.portion}</small></th>
+          <td>{item.totalSugarG} g</td>
+          <td>{item.freeSugarMinG}–{item.freeSugarMaxG} g</td>
+        </tr>)}
+      </tbody>
+    </table>
+  </div>
+  <p>Total sugar includes natural lactose in plain milk; this lactose is not counted as free sugar. Boba, pudding, and grass jelly have a 0-to-total free sugar range because the source does not identify the origins of their sugars. This is formulation uncertainty, not a measured statistical confidence interval. Topping nutrition varies by brand, portion, and recipe, and 0% syrup does not remove topping sugar.</p>
+  <p><strong>Daily context:</strong> The 25 g free sugar reference equals 5% of a 2,000 kcal daily diet (4 kcal per gram). WHO advises limiting free sugar to less than 10% of daily energy and notes further benefits at 5% or less. This is a daily dietary reference, not a per-drink safety limit or a universal personal recommendation. A result within it does not establish that a drink is healthy or safe.</p>
+  <p><strong>Sources and limits</strong> · checked 27 October 2026</p>
+  <ul>
+    {Object.values(sources).map(source => <li><a href={source.url}>{source.title}</a> — {source.note}</li>)}
+  </ul>
+  <p>Unsweetened tea at 0 g, plain milk at 4.8 g per 100 mL, the 500 mL recipe, and the syrup schedule are supplied project reference values. The milk value has not been independently verified against the supplied sources. TP TEA supplies the three topping totals; their reference serving weights are not given. The Konjac value uses the sweetened Bossen Rainbow Jelly label as a proxy. The free sugar ranges are modeling assumptions.</p>
+</details>

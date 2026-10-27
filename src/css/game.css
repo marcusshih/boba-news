@@ -1,94 +1,81 @@
 .game-wrapper {
-  width: 100%;
-  height: 100vh;
+  width: calc(100vw - 10rem);
+  min-height: 100vh;
   position: relative;
   margin-left: -15rem;
+  padding-top: 1%;
+  margin-bottom: 3rem;
 }
-.game-section {
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  box-sizing: border-box;
+.game-wrapper * { box-sizing: border-box; }
+.game-title { font-size: 5rem; margin: 0; line-height: 1.2; }
+.game-reference { margin: .5rem 0 0; font-size: 1.1rem; }
+.game-section { position: relative; width: 100%; }
+#container { display: flex; width: 100%; justify-content: space-between; padding-top: 2rem; }
+#menu-container { z-index: 1; width: 23%; flex-shrink: 0; }
+#menu-container > p:not(.game-note), #menu-container legend { font-size: 2rem; margin-bottom: 0; }
+#menu-container fieldset { border: 0; padding: 0; margin: 2rem 0 0; min-width: 0; }
+#menu-container legend { padding: 0; }
+#menu-container .game-option { display: flex; align-items: center; min-height: 44px; padding-left: .35rem; }
+#menu-container .game-option label { display: flex; align-items: center; min-height: 44px; cursor: pointer; }
+#menu-container span { font-size: 1.5rem; padding: .15em 1em; }
+#menu-container select { appearance: base-select; display: inline-block; border: 2px solid #777; background: #eee; padding: 10px; min-height: 44px; max-width: 100%; }
+#menu-container select:hover { background: #ddd; }
+#menu-container input[type="checkbox"] { transform: scale(1.8); cursor: pointer; }
+.game-wrapper :is(input, select, button, summary, a, [tabindex]):focus-visible { outline: 3px solid #333; outline-offset: 5px; }
+.game-wrapper button { font: inherit; font-size: 1.2rem; color: #333; background: transparent; border: 1px solid #333; padding: .5rem .75rem; min-height: 44px; cursor: pointer; }
+.game-wrapper button:hover { background: #eee; }
+.make-drinks { text-align: center; width: 100%; position: relative; }
+.make-drinks img { top: 45%; left: 50%; transform: translate(-50%, -50%); width: 60%; position: absolute; transition: opacity .3s; opacity: 0; }
+.sugar-visual { width: 300px; flex-shrink: 0; }
+#sketch-container { width: 300px; max-width: 100%; aspect-ratio: 3 / 5; }
+#sketch-container canvas { display: block; width: 100% !important; height: 100% !important; }
+#sugarDisplay { text-align: center; }
+.game-wrapper .game-cube-count { font-size: 2.2rem; line-height: 1.25; margin: .5rem 0; }
+.game-wrapper .game-total { font-size: 1.3rem; margin: .25rem 0; }
+.game-wrapper .game-note { font-size: 1rem; line-height: 1.5; margin: .75rem 0; color: #333; }
+.game-wrapper .game-reference-notice[data-state="exceeds"] { color: #8b2520; font-weight: bold; }
+.game-wrapper a { color: #333; text-underline-offset: .15em; }
+.game-recipe { border-top: 1px solid #777; padding-top: 1rem; }
+.game-comparison { border-top: 3px double #333; padding-block: 1rem; margin-top: 1.5rem; }
+.game-comparison h3 { font-size: 1.8rem; margin: 0 0 1rem; }
+.game-reference-drink { display: flex; align-items: center; gap: 1.5rem; }
+[data-reference-illustration] { width: 160px; flex-shrink: 0; }
+[data-reference-illustration] .make-drinks { width: 100%; height: 270px; }
+[data-reference-illustration] img { width: 85%; transition: none; }
+.game-reference-cubes { width: 150px; height: 250px; object-fit: contain; }
+.game-reference-text { flex: 1; min-width: 0; }
+.game-reference-text > p { font-size: 1.3rem; }
+.game-methodology { border-top: 1px solid #777; padding-top: 1rem; margin-top: 2rem; }
+.game-methodology summary { font-size: 1.5rem; cursor: pointer; width: fit-content; }
+.game-methodology :is(p, li) { font-size: 1.1rem; line-height: 1.6; color: #333; }
+.game-methodology li { margin-bottom: .75rem; }
+.game-table-scroll { overflow-x: auto; }
+.game-methodology table { width: 100%; border-collapse: collapse; text-align: left; font-size: 1.1rem; color: #333; }
+.game-methodology caption { text-align: left; margin-bottom: .5rem; }
+.game-methodology :is(th, td) { border-bottom: 1px solid #aaa; padding: .5rem; vertical-align: top; }
+.game-methodology small { display: block; font-weight: normal; }
+.game-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.game-wrapper [hidden] { display: none !important; }
+@media (max-width: 1100px) {
+  #container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; }
+  #menu-container { width: 100%; grid-column: 1 / -1; }
+  .make-drinks { min-height: 350px; }
+  .make-drinks img { width: 90%; max-width: 240px; }
+  .sugar-visual { width: 100%; }
+  #sketch-container { margin: 0 auto; }
 }
-
-.make-drinks {
-  text-align: center;
-  width: 100%;
-  position: relative;
-}
-
-.make-drinks img {
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* 讓子元素完全居中 */
-  width: 60%;
-  position: absolute;
-  transition: opacity 0.3s;
-  opacity: 0;
-}
-
-/* Positioning the entire canvas and UI elements */
-#container {
-  display: flex;
-  width: 90%;
-  justify-content: space-between;
-  padding-top: 10%;
-}
-
-/* Style for the menu */
-#menu-container {
-  z-index: 1;
-  /* background: rgba(255, 255, 255, 0.8); */
-  border-radius: 10px;
-  width: 35%;
-}
-
-#sugarDisplay {
-  font-size: 2.2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-/*---------MENU CSS--------*/
-#menu-container p {
-  font-size: 2rem;
-}
-
-select {
-  appearance: base-select;
-  display: inline-block;
-}
-select {
-  border: 2px solid #dddddd;
-  background: #eeeeee;
-  padding: 10px;
-  transition: 0.4s;
-}
-
-select:hover,
-select:focus {
-  background: #dddddd;
-}
-
-input[type="checkbox"] {
-  transform: scale(1.8);
-}
-
-#menu-container p {
-  margin-bottom: 0;
-}
-
-#menu-container span {
-  font-size: 1.5rem;
-  padding: 1em;
-}
-
 @media (max-width: 768px) {
-  #container {
-    display: block;
-  }
-
-  #menu-container {
-    display: flex;
-  }
+  .game-wrapper { width: 100%; margin-left: 0; }
+  .game-title { font-size: clamp(2.5rem, 8vw, 5rem); }
+  .make-drinks { min-height: 0; }
+  #menu-container { display: block; }
+  .game-wrapper .game-cube-count { font-size: 1.6rem; }
+  .game-reference-drink { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+  .game-reference-text { flex-basis: 100%; }
+  [data-reference-illustration] { width: 120px; }
+  .game-reference-cubes { width: 120px; height: 200px; }
+  [data-reference-illustration] .make-drinks { height: 220px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-wrapper .make-drinks img { transition: none; }
 }
